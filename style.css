@@ -1,9 +1,0 @@
-html, body {
-    font-family: 'Ubuntu Mono', Verdana, Arial, sans-serif;
-    font-size: 12px;
-    line-height: normal;
-}
-
-.toc li {
-    list-style-type: circle;
-}

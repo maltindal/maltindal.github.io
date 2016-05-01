@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <link href="style.css" rel="stylesheet" type="text/css">
-  <link href='https://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
-</head>
+---
+layout: default
+---
 
-<body>
-  <h1>Muhammet Altindal</h1>
-  <ul class="toc">
-    <li><a href="morse">morse interface</a></li>
-    <li><a href="field">finite fields</a></li>
+<div class="home">
+
+  <h1 class="page-heading">Posts</h1>
+
+  <ul class="post-list">
+    {% for post in site.posts %}
+      <li>
+        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+      </li>
+    {% endfor %}
   </ul>
-</body>
 
-</html>
+</div>
