@@ -202,13 +202,37 @@
     font-size: $small-font-size;
 }
 
-#toc.affix {
-    top: 30px;
-
-    @include media-query($on-laptop) {
-      top: auto;
-      position: relative;
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+    &:before,
+    &:after {
+        display: table;
+        content: " ";
     }
+    &:after {
+        clear: both;
+    }
+}
+
+.col-md-3, .col-md-9 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.row, .row:before, .row:after, .col-md-3, .col-md-9 {
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 992px) {
+  .col-md-3 { width: 25%; }
+  .col-md-9 { width: 75%; }
+  .col-md-3, .col-md-9 {
+    float: left;
+  }
+  .nav { margin-bottom: 0; }
 }
 
 @include media-query($on-palm) {
