@@ -13,7 +13,7 @@ nav[data-toggle=toc] .nav>.active>a {
     font-weight: 700;
     color: $primary-color;
     background-color: transparent;
-    border-left: 2px solid #563d7c;
+    border-left: 2px solid $primary-color;
 }
 
 nav[data-toggle=toc] .nav>li>a {
