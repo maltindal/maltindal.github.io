@@ -105,8 +105,8 @@ var sound = (function (ctx) {
     }
   };
   return {
-    'play': function () { processor.connect(ctx.destination); },
-    'stop': function () { processor.disconnect(); },
+    play: function () { processor.connect(ctx.destination); },
+    stop: function () { processor.disconnect(); },
   };
 })(new AudioContext());
 ```

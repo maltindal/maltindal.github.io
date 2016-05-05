@@ -10,8 +10,8 @@ var morse = (function (resultElem) {
 		'–•––': 'Y', '––••': 'Z'
   };
   return {
-  	'push': function (c) { current += c; console.log(current); },
-  	'pop': function () {
+  	push: function (c) { current += c; console.log(current); },
+  	pop: function () {
   	    if (current !== '') {
 		      if (!!codes[current]) {
 		        resultElem.innerHTML += codes[current];
