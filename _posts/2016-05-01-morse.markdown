@@ -85,7 +85,7 @@ The time $$t$$ can be computed using the sample rate. The sample rate is
 the amount of samples or sample-frames per second. For instance if the
 sample rate is 44100, then you can say that there are 44100 samples within one
 second. Let the unit of the time be 1 second, $$A=1$$, $$f=440$$ and
-$$\varphi = 0$$. It follows $$y(x) = sin(2\pi fx/44100)$$, where $$x/44100 = t$$.
+$$\varphi = 0$$. It follows $$y(x) = \sin(2\pi fx/44100)$$, where $$x/44100 = t$$.
 The stream of the sound data to the speakers can be started by
 connecting the processor audio node to the destination of the audio context.
 Similarly the stream can be stopped by disconnecting the processor node
