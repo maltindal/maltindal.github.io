@@ -1,8 +1,8 @@
 @media screen and (min-width: 992px) {
   nav[data-toggle=toc].affix {
       top: 30px;
-      width: inherit;
       position: fixed;
+      .nav { margin-bottom: 0; }
   }
 }
 

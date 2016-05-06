@@ -227,8 +227,8 @@
 }
 
 @media screen and (min-width: 992px) {
-  .col-md-3 { width: 25%; }
-  .col-md-9 { width: 75%; }
+  .col-md-3 { width: 300px; }
+  .col-md-9 { width: calc(100% - 300px); }
   .col-md-3, .col-md-9 {
     float: left;
   }
