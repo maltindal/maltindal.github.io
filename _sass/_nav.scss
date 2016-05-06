@@ -6,6 +6,8 @@
   }
 }
 
+nav[data-toggle=toc] { background-color: lighten($primary-color, 70%); }
+
 nav[data-toggle=toc] .nav>.active:focus>a,
 nav[data-toggle=toc] .nav>.active:hover>a,
 nav[data-toggle=toc] .nav>.active>a {
