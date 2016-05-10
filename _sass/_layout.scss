@@ -226,7 +226,7 @@
   box-sizing: border-box;
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (min-width: $on-laptop) {
   .col-md-3 { width: 300px; }
   .col-md-9 { width: calc(100% - 300px); }
   .col-md-3, .col-md-9 {
