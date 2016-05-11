@@ -49,6 +49,8 @@ var sound = (function (ctx) {
   var timeout;
 
   document.body.onkeypress = function (e) {
+    if (e.which !== 77 && e.which !== 109) return;
+
   	clearTimeout(timeout);
   	keydownOccured = true;
   	sound.play();
@@ -77,6 +79,7 @@ var sound = (function (ctx) {
   	// only accepting 'm'
   	switch (e.which) {
   	case 77:
+    case 109:
   	    if (((keyu - keyd) < threshold)) {
           morse.push('•');
         } else {
