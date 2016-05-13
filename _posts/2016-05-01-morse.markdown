@@ -78,7 +78,8 @@ and the number of output channels.
 ![Samples for the 440 Hz sound](/svg/morse-audio-data.svg "Samples for the 440 Hz sound")
 
 The function to generate the data for the 440 Hz signal can be formulated using
-the [function of time][Function_of_time] $$y(t) = A\sin(2\pi f t + \varphi)$$,
+the [function of time][Function_of_time]
+$$y: \mathbb{N} \to \mathbb{R}, y(t) = A\sin(2\pi f t + \varphi), \forall t \in \mathbb{N}$$,
 where $$A$$ is the amplitude, $$f$$ being the frequency, $$t$$ the time,
 and $$\varphi$$ the phase.
 The time $$t$$ can be computed using the sample rate. The sample rate is
