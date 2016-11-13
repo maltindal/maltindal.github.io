@@ -1,9 +1,17 @@
-@media screen and (min-width: 992px) {
+@media screen and (min-width: $on-laptop) {
   nav[data-toggle=toc].affix {
       top: 30px;
       width: 270px;
       position: fixed;
       margin-bottom: 0;
+  }
+  nav[data-toggle=toc] .nav .nav {
+      max-height: 0px;
+      opacity: 0;
+  }
+  nav[data-toggle=toc] .nav>li.active .nav {
+      max-height: 500px;
+      opacity: 1;
   }
 }
 
@@ -31,6 +39,10 @@ nav[data-toggle=toc] .nav>.active>a {
     background-color: lighten($primary-color, 65%);
 }
 
+nav[data-toggle=toc] .nav>li .nav {
+    background-color: lighten($primary-color, 65%);
+}
+
 nav[data-toggle=toc] .nav>li>a {
     position: relative;
     display: block;
@@ -38,6 +50,18 @@ nav[data-toggle=toc] .nav>li>a {
     font-size: 13px;
     font-weight: 500;
     color: #767676;
+}
+
+nav[data-toggle=toc] .nav>li .nav>li>a,
+nav[data-toggle=toc] .nav>li .nav>li:focus>a,
+nav[data-toggle=toc] .nav>li .nav>li:hover>a {
+    padding: 4px 30px;
+}
+
+nav[data-toggle=toc] .nav>li .nav>.active:focus>a,
+nav[data-toggle=toc] .nav>li .nav>.active:hover>a,
+nav[data-toggle=toc] .nav>li .nav>.active>a {
+  background-color: lighten($primary-color, 60%);
 }
 
 .nav {

@@ -17,7 +17,13 @@
     letter-spacing: -1px;
     margin-bottom: 0;
     float: left;
-    &:hover { color: white; }
+}
+
+.site-logo {
+    margin-top: 10px;
+    margin-right: 5px;
+    height: 40px;
+    float: left;
 }
 
 .site-nav {
