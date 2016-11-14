@@ -129,10 +129,11 @@ blockquote {
  */
 pre,
 code {
+    font-family: 'Anonymous Pro', monospace;
     font-size: 15px;
     border: 1px solid $grey-color-light;
     border-radius: 3px;
-    background-color: #eef;
+    background-color: $code-bg-color;
 }
 
 code {
