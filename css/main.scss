@@ -3,10 +3,10 @@
 ---
 @charset "utf-8";
 
-@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+@import url('https://fonts.googleapis.com/css?family=Lato:300i,400');
 
 // Our variables
-$base-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$base-font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
 $base-font-weight: 400;
 $small-font-size:  $base-font-size * 0.875;
@@ -14,10 +14,10 @@ $base-line-height: 1.5;
 
 $spacing-unit:     30px;
 
-$primary-color:    #15625F;
+$primary-color:    #00AF7D;
 $text-color:       #111;
 $background-color: #fdfdfd;
-$brand-color:      #00a49d;
+$brand-color:      #022620;
 $code-bg-color:    #f5f5f5;
 
 $grey-color:       #828282;
