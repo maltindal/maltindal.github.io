@@ -1188,7 +1188,7 @@ $$(g^a)^{q-1-b} = g^{a(q-1) - ab} = (g^{q-1})^a g^{-ab} = g^{-ab}$$
 and finally Bob can calculate
 $$g^{-ab}Mg^{ba}=g^{-ab}g^{ab}M=g^{ab-ab}M=g^0M=M \in \mathbb{F}^{\times}$$.
 
-Now, Oscar could eavesdrop $$g^b, g^a, Mg^ab$$. In order to see $$M$$, Oscar would need
+Now, Oscar could eavesdrop $$g^b, g^a, Mg^{ab}$$. In order to see $$M$$, Oscar would need
 to calculate $$b$$ and $$a$$ which would mean that he could solve the DLP. Also in this
 method, it is _assumed_ that it is required to solve DLP in order to break the
 cryptosystem.
