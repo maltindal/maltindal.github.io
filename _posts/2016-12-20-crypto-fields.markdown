@@ -39,15 +39,15 @@ for any sets.
 An operation on a set $$S$$ is a function $$f: S \times S \rightarrow S$$.
 So, the function maps two elements of a set $$S$$ to another element $$f(a,b)$$
 of the set $$S$$.
-Operations are usually noted by $$+, \times, \*$$ and so on, but usually not with letters.
+Operations are usually noted by $$+, \times, *$$ and so on, but usually not with letters.
 Often the operation of two elements is noted using the infix notation as $$a+b$$
 instead of, for instance, the prefix notation $$+(a,b)$$.
 
 In this article one of the core mathematical or algebraic structures used is the
-structure of a group. A group is a set $$G$$ with an operation $$\*$$, such that the
+structure of a group. A group is a set $$G$$ with an operation $$*$$, such that the
 following three axioms are true:
 
-(i) $$\*$$ is _associative_, that is, for all $$a,b,c \in G$$ it is
+(i) $$*$$ is _associative_, that is, for all $$a,b,c \in G$$ it is
 
 $$ a * (b * c) = (a * b) * c $$
 
@@ -57,35 +57,35 @@ $$a*e=e*a = a.$$
 
 (iii) For all $$a \in G$$ there exists an _inverse element_ $$a^{-1} \in G$$, such that
 
-$$a*a^{-1} = a^{-1}\*a=e.$$
+$$a*a^{-1} = a^{-1}*a=e.$$
 
 And if the operation is also commutative, that is $$ a*b = b*a $$ for all $$a,b \in G$$
 then the group is also called an abelian or commutative group.
 
 Example:
 
-Let $$G = ((\mathbb{Z}/3\mathbb{Z})^{\times}, \*) = (\{ 1, 2 \}, \*)$$.
-The operation is defined as $$\*: G \times G \rightarrow G$$ and $$\*(a,b) \mapsto ab \text{ mod } 3$$ for all $$a,b \in G$$.
-First of all, the operation $$\*$$ is well defined, since the elements $$\*(a,b)$$ for all
+Let $$G = ((\mathbb{Z}/3\mathbb{Z})^{\times}, *) = (\{ 1, 2 \}, *)$$.
+The operation is defined as $$*: G \times G \rightarrow G$$ and $$*(a,b) \mapsto ab \text{ mod } 3$$ for all $$a,b \in G$$.
+First of all, the operation $$*$$ is well defined, since the elements $$*(a,b)$$ for all
 $$a,b \in G$$ are also contained in $$G = (\mathbb{Z}/3\mathbb{Z})^{\times}$$.
 
 For all $$a,b \in G$$ it is $$ a * (b * c) = (a * b) * c$$:
 
 $$
 \begin{align}
-a * (b * c) &= (a * (bc \text{ mod } 3)) &&\text{definition of }\*\\
-            &= (a \cdot (bc \text{ mod } 3)) \text{ mod } 3 &&\text{definition of }\*\\
+a * (b * c) &= (a * (bc \text{ mod } 3)) &&\text{definition of }*\\
+            &= (a \cdot (bc \text{ mod } 3)) \text{ mod } 3 &&\text{definition of }*\\
             &= (a \text{ mod } 3 \cdot bc \text{ mod } 3 ) \text{ mod } 3 &&\text{modulo multiplication}\\
             &= a(bc) \text{ mod } 3 &&\text{modulo multiplication}\\
             &= (ab)c \text{ mod } 3 &&\text{integer multiplication is associative}\\
             &= (ab \text{ mod } 3 \cdot c \text{ mod } 3) \text{ mod } 3 &&\text{modulo multiplication}\\
             &= ((ab \text{ mod } 3) \cdot c) \text{ mod } 3 &&\text{modulo multiplication}\\
-            &= (ab \text{ mod } 3) * c &&\text{definition of }\*\\
+            &= (ab \text{ mod } 3) * c &&\text{definition of }*\\
             &= (a * b) * c &&\text{definition of }*
 \end{align}
 $$
 
-The operation $$\*$$ is associative.
+The operation $$*$$ is associative.
 The calculations above are a slightly modified version of this [source][ModMultIsAssoc].
 
 Since for all $$a \in G$$
@@ -137,9 +137,9 @@ actually a corollary of Lagrange's theorem.
 
 $$
 \begin{align}
-((\mathbb{Z}/3\mathbb{Z})^{\times}, \*) &= \{ 2^1=2, 2^2=4=1 \}\\
-((\mathbb{Z}/5\mathbb{Z})^{\times}, \*) &= \{ 3^1=3, 3^2=9=4, 3^3=27=2, 3^4=81=1 \}\\
-((\mathbb{Z}/p\mathbb{Z})^{\times}, \*) &= \{ a^i | i \in \mathbb{Z},  \} \text{ where }a \ne 1 \in \mathbb{Z}/p\mathbb{Z} \text{ and } p \text{ prime}\\
+((\mathbb{Z}/3\mathbb{Z})^{\times}, *) &= \{ 2^1=2, 2^2=4=1 \}\\
+((\mathbb{Z}/5\mathbb{Z})^{\times}, *) &= \{ 3^1=3, 3^2=9=4, 3^3=27=2, 3^4=81=1 \}\\
+((\mathbb{Z}/p\mathbb{Z})^{\times}, *) &= \{ a^i | i \in \mathbb{Z},  \} \text{ where }a \ne 1 \in \mathbb{Z}/p\mathbb{Z} \text{ and } p \text{ prime}\\
 (\mathbb{Z}/3\mathbb{Z}, +) &= \{ 2, 2+2=4=1, 1+2=3=0 \}\\
 (\mathbb{Z}/p\mathbb{Z}, +) &= \{ za | z \in \mathbb{Z} \} \text{ where } a \ne 0 \in \mathbb{Z}/p\mathbb{Z} \text{ and } p \text{ prime}
 \end{align}
@@ -170,11 +170,11 @@ $$\langle a\rangle = \{ a^i | i \in \mathbb{Z} \} = G.$$
 Now, since later on, finite fields are going to be constructed, it needs to be defined
 what a field actually is. The definition of the algebraic structure of a field is based
 on the groups. Let $$(G,+)$$ be a group.
-Then, if another operation $$\*$$ is taken into the existing group $$R = (G,+,\*)$$,
+Then, if another operation $$*$$ is taken into the existing group $$R = (G,+,*)$$,
 where the second operation fulfills the properties:
 
-(i) the operation $$\*$$ is associative and there exists a neutral element $$e_{\*} \in G$$
-such that $$e_{\*} * a = a * e_{\*} = a$$ for all $$a \in G$$.
+(i) the operation $$*$$ is associative and there exists a neutral element $$e_{*} \in G$$
+such that $$e_{*} * a = a * e_{*} = a$$ for all $$a \in G$$.
 
 (ii) the distributive rules are fulfilled:
 
@@ -185,16 +185,16 @@ a * (b + c) = a * b + a * c\\
 \end{align}
 $$
 
-Then $$R = (G, +, \*)$$ is called a _ring_. If also the condition $$a * b = b * a$$ holds
+Then $$R = (G, +, *)$$ is called a _ring_. If also the condition $$a * b = b * a$$ holds
 for all $$a, b \in R$$ then the ring is also called a _commutative ring_.
 
 Note, that the ring does not fulfill necessarily the axiom, that there exists an
 inverse element $$a^{-1}$$ for each element $$a \in R$$ such that
 $$a * a^{-1} = a^{-1} * a = e$$.
 Now, if a ring, such as $$R$$ also fulfills the condition about the inverse elements,
-namely, if $$(R \backslash \{0\}, \*)$$ is a group, then the ring can be called a field.
+namely, if $$(R \backslash \{0\}, *)$$ is a group, then the ring can be called a field.
 And if a field contains $$n < \infty$$ elements then the field is also called a
-finite field. For instance, all sets $$(\mathbb{Z}/p\mathbb{Z}, +, \*)$$
+finite field. For instance, all sets $$(\mathbb{Z}/p\mathbb{Z}, +, *)$$
 where $$p$$ is prime are fields.
 
 In the next chapter, a problem is going to be defined.
