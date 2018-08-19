@@ -6,30 +6,30 @@ categories: web
 math: true
 ---
 ## Introduction
-The goal in this article is to provide a walkthrough through relevant topics in order to
+The goal of this article is to provide a walkthrough through relevant topics in order to
 demonstrate how finite fields can be constructed for usage in cryptosystems.
 The application of the methods will be demonstrated on three selected cryptosystems,
 well actually two, one of them is a key exchange protocol.
 
 In order to show how finite fields can be constructed and used in cryptosystems some
 fundamental topics will be described which are enriched with links for you to find more
-information. In the section fundamentals an introduction is given to abstract algebra
-by describing what a group, ring and field is. Then the discrete logarithm problem will
+information. In the section fundamentals, an introduction is given to abstract algebra
+by describing what a group, ring, and field is. Then the discrete logarithm problem will
 be defined. This is a problem which assumed that it is hard to solve. Some of the
-existing protocols and cryptosystems base on the assumption that this problem is hard to
-solve. Afterwards polynomials and a special group of polynomials, namely the irreducible
+existing protocols and cryptosystems build on the assumption that this problem is hard to
+solve. Afterward, polynomials and a special group of polynomials, namely the irreducible
 polynomials will be discussed. The irreducible polynomials are a key element in order to
 construct finite fields with $$q = p^n$$ elements where $$p$$ is prime and $$n \in \mathbb{N}$$.
 Then, it is shown how to systematically construct finite fields $$\mathbb{F}_{p^n}$$.
 Finally, it is demonstrated how to use the constructed finite fields in the case
-of Diffie-Hellman key exchange, Massey-Omura and ElGamal.
+of the Diffie-Hellman key exchange, Massey-Omura and ElGamal.
 
 Where possible extensive proofs and theory has been saved in order to focus more on the
-mechanics of the theory itself. For this, you often can find haskell code after a section
-in order try the learned topics. There is no reason why I took haskell.
+mechanics of the theory itself. For this, you often can find Haskell code after a section
+in order to try the learned topics. There is no reason why I took Haskell.
 I recommend to try out the methods described in each step which helps
 a lot for understanding. Feel free to give the challenge exercises a try
-which are added in the end of some sections.
+which is added at the end of some sections.
 
 ### Fundamentals
 There are two operations which can be applied on the integers, for instance.
@@ -39,15 +39,15 @@ for any sets.
 An operation on a set $$S$$ is a function $$f: S \times S \rightarrow S$$.
 So, the function maps two elements of a set $$S$$ to another element $$f(a,b)$$
 of the set $$S$$.
-Operations are usually noted by $$+, \times, *$$ and so on, but usually not with letters.
+Operations are usually noted by $$+, \times, \*$$ and so on, but usually not with letters.
 Often the operation of two elements is noted using the infix notation as $$a+b$$
 instead of, for instance, the prefix notation $$+(a,b)$$.
 
 In this article one of the core mathematical or algebraic structures used is the
-structure of a group. A group is a set $$G$$ with an operation $$*$$, such that the
+structure of a group. A group is a set $$G$$ with an operation $$\*$$, such that the
 following three axioms are true:
 
-(i) $$*$$ is _associative_, that is, for all $$a,b,c \in G$$ it is
+(i) $$\*$$ is _associative_, that is, for all $$a,b,c \in G$$ it is
 
 $$ a * (b * c) = (a * b) * c $$
 
@@ -57,38 +57,38 @@ $$a*e=e*a = a.$$
 
 (iii) For all $$a \in G$$ there exists an _inverse element_ $$a^{-1} \in G$$, such that
 
-$$a*a^{-1} = a^{-1}*a=e.$$
+$$a*a^{-1} = a^{-1}\*a=e.$$
 
 And if the operation is also commutative, that is $$ a*b = b*a $$ for all $$a,b \in G$$
-then the group is also called and abelian or commutative group.
+then the group is also called an abelian or commutative group.
 
 Example:
 
-Let $$G = ((\mathbb{Z}/3\mathbb{Z})^{\times}, *) = (\{ 1, 2 \}, *)$$.
-The operation is defined as $$*: G \times G \rightarrow G$$ and $$*(a,b) \mapsto ab \text{ mod } 3$$ for all $$a,b \in G$$.
-First of all, the operation $$*$$ is well defined, since the elements $$*(a,b)$$ for all
+Let $$G = ((\mathbb{Z}/3\mathbb{Z})^{\times}, \*) = (\{ 1, 2 \}, \*)$$.
+The operation is defined as $$\*: G \times G \rightarrow G$$ and $$\*(a,b) \mapsto ab \text{ mod } 3$$ for all $$a,b \in G$$.
+First of all, the operation $$\*$$ is well defined, since the elements $$\*(a,b)$$ for all
 $$a,b \in G$$ are also contained in $$G = (\mathbb{Z}/3\mathbb{Z})^{\times}$$.
 
 For all $$a,b \in G$$ it is $$ a * (b * c) = (a * b) * c$$:
 
 $$
 \begin{align}
-a * (b * c) &= (a * (bc \text{ mod } 3)) &&\text{definition of }*\\
-            &= (a \cdot (bc \text{ mod } 3)) \text{ mod } 3 &&\text{definition of }*\\
+a * (b * c) &= (a * (bc \text{ mod } 3)) &&\text{definition of }\*\\
+            &= (a \cdot (bc \text{ mod } 3)) \text{ mod } 3 &&\text{definition of }\*\\
             &= (a \text{ mod } 3 \cdot bc \text{ mod } 3 ) \text{ mod } 3 &&\text{modulo multiplication}\\
             &= a(bc) \text{ mod } 3 &&\text{modulo multiplication}\\
             &= (ab)c \text{ mod } 3 &&\text{integer multiplication is associative}\\
             &= (ab \text{ mod } 3 \cdot c \text{ mod } 3) \text{ mod } 3 &&\text{modulo multiplication}\\
             &= ((ab \text{ mod } 3) \cdot c) \text{ mod } 3 &&\text{modulo multiplication}\\
-            &= (ab \text{ mod } 3) * c &&\text{definition of }*\\
+            &= (ab \text{ mod } 3) * c &&\text{definition of }\*\\
             &= (a * b) * c &&\text{definition of }*
 \end{align}
 $$
 
-The operation $$*$$ is associative.
+The operation $$\*$$ is associative.
 The calculations above are a slightly modified version of this [source][ModMultIsAssoc].
 
-Since, for all $$a \in G$$
+Since for all $$a \in G$$
 
 $$
 \begin{align}
@@ -117,7 +117,7 @@ the group $$G$$ is an abelian group.
 
 The study of the algebraic structure of a group is very useful and extensive. There are
 a lot of highly useful and important concepts in the group theory, such as
-[sub groups][SubGroupTest], [order of group elements][OrderOfGroupElements],
+[subgroups][SubGroupTest], [order of group elements][OrderOfGroupElements],
 [Lagrange's theorem][LagrangeTheorem] with the related [cosets][Cosets],
 [group homomorphisms][GroupHomomorphisms] which are basically mappings between groups
 which preserve the group operation,
@@ -125,8 +125,8 @@ which preserve the group operation,
 [normal subgroups and quotient groups][NormalAndQuotientGroups],
 [class equation of a group][ClassEquation] and related concepts of
 [centralizers and normalizers][CentralizerAndNormalizer]
-and even more topics... All mentioned topics are very interesting and useful.
-However, in the following I will focus more on the concept of [cyclic groups][CyclicGroups]
+and even more topics... All the mentioned topics are very interesting and useful.
+However, in the following, I will focus more on the concept of [cyclic groups][CyclicGroups]
 since cyclic groups are the essential part of the cryptosystems described later.
 
 > A cyclic group is a group that can be generated by a single element X (the group generator).
@@ -137,9 +137,9 @@ actually a corollary of Lagrange's theorem.
 
 $$
 \begin{align}
-((\mathbb{Z}/3\mathbb{Z})^{\times}, *) &= \{ 2^1=2, 2^2=4=1 \}\\
-((\mathbb{Z}/5\mathbb{Z})^{\times}, *) &= \{ 3^1=3, 3^2=9=4, 3^3=27=2, 3^4=81=1 \}\\
-((\mathbb{Z}/p\mathbb{Z})^{\times}, *) &= \{ a^i | i \in \mathbb{Z},  \} \text{ where }a \ne 1 \in \mathbb{Z}/p\mathbb{Z} \text{ and } p \text{ prime}\\
+((\mathbb{Z}/3\mathbb{Z})^{\times}, \*) &= \{ 2^1=2, 2^2=4=1 \}\\
+((\mathbb{Z}/5\mathbb{Z})^{\times}, \*) &= \{ 3^1=3, 3^2=9=4, 3^3=27=2, 3^4=81=1 \}\\
+((\mathbb{Z}/p\mathbb{Z})^{\times}, \*) &= \{ a^i | i \in \mathbb{Z},  \} \text{ where }a \ne 1 \in \mathbb{Z}/p\mathbb{Z} \text{ and } p \text{ prime}\\
 (\mathbb{Z}/3\mathbb{Z}, +) &= \{ 2, 2+2=4=1, 1+2=3=0 \}\\
 (\mathbb{Z}/p\mathbb{Z}, +) &= \{ za | z \in \mathbb{Z} \} \text{ where } a \ne 0 \in \mathbb{Z}/p\mathbb{Z} \text{ and } p \text{ prime}
 \end{align}
@@ -167,14 +167,14 @@ Then
 
 $$\langle a\rangle = \{ a^i | i \in \mathbb{Z} \} = G.$$
 
-Now, since later on finite fields are going to be constructed, it needs to be defined
+Now, since later on, finite fields are going to be constructed, it needs to be defined
 what a field actually is. The definition of the algebraic structure of a field is based
 on the groups. Let $$(G,+)$$ be a group.
-Then, if another operation $$*$$ is taken into the existing group $$R = (G,+,*)$$,
+Then, if another operation $$\*$$ is taken into the existing group $$R = (G,+,\*)$$,
 where the second operation fulfills the properties:
 
-(i) the operation $$*$$ is associative and there exists a neutral element $$e_{*} \in G$$
-such that $$e_{*} * a = a * e_{*} = a$$ for all $$a \in G$$.
+(i) the operation $$\*$$ is associative and there exists a neutral element $$e_{\*} \in G$$
+such that $$e_{\*} * a = a * e_{\*} = a$$ for all $$a \in G$$.
 
 (ii) the distributive rules are fulfilled:
 
@@ -185,24 +185,24 @@ a * (b + c) = a * b + a * c\\
 \end{align}
 $$
 
-Then $$R = (G, +, *)$$ is called a _ring_. If also the condition $$a * b = b * a$$ holds
+Then $$R = (G, +, \*)$$ is called a _ring_. If also the condition $$a * b = b * a$$ holds
 for all $$a, b \in R$$ then the ring is also called a _commutative ring_.
 
 Note, that the ring does not fulfill necessarily the axiom, that there exists an
 inverse element $$a^{-1}$$ for each element $$a \in R$$ such that
 $$a * a^{-1} = a^{-1} * a = e$$.
 Now, if a ring, such as $$R$$ also fulfills the condition about the inverse elements,
-namely if $$(R \backslash \{0\}, *)$$ is a group, then the ring can be called a field.
+namely, if $$(R \backslash \{0\}, \*)$$ is a group, then the ring can be called a field.
 And if a field contains $$n < \infty$$ elements then the field is also called a
-finite field. For instance, all sets $$(\mathbb{Z}/p\mathbb{Z}, +, *)$$
+finite field. For instance, all sets $$(\mathbb{Z}/p\mathbb{Z}, +, \*)$$
 where $$p$$ is prime are fields.
 
-In the next chapter a problem is going to be defined.
-Usually the goal is to solve problems but in cryptography one is looking for really hard problems.
+In the next chapter, a problem is going to be defined.
+Usually, the goal is to solve problems but in cryptography one is looking for really hard problems.
 The motivation for finding hard problems, in this case, is to make it hard for someone
 who does not and should not know some key information to solve a certain problem, namely
 to read encrypted messages for instance.
-In the following a problem will be described. The good thing about the described problem
+In the following, a problem will be described. The good thing about the problem
 is that can be defined over a cyclic group,
 and with that also over every multiplicative subgroup of any finite field
 - especially the multiplicative group of a finite field itself. There are proofs about
@@ -210,7 +210,7 @@ the fact that every finite subgroup of a multiplicative group of a field is cycl
 These proofs are unfortunately somewhat tricky. If you are interested I want to encourage
 you to take a look at the proofs [here][MultCyclicFiniteFieldGroup1],
 [here][MultCyclicFiniteFieldGroup2] and [here][MultCyclicFiniteFieldGroup3].
-I would recommended though, to learn first about the details of
+I would recommend though, to learn first about the details of
 [Lagrange's theorem][LagrangeTheorem] and especially about the
 [order of group elements][OrderOfGroupElements] together with the topic about all the
 [properties of subgroups of finite cyclic groups][FiniteCyclicSubgroupProps] is very helpful in my opinion.
@@ -220,7 +220,7 @@ I would recommended though, to learn first about the details of
 ### Discrete Logarithm Problem
 The goal of encrypting and decrypting a message is to make it hard for an unwanted
 recipient to read the message. However, a method is required to make it easy for the
-wanted recipient to easily decrypt the encrypted message. In its core a function is
+wanted recipient to easily decrypt the encrypted message. In its core, a function is
 needed which is easy to compute but its inverse isn't easy to compute.
 
 $$
@@ -236,7 +236,7 @@ defined over a finite cyclic group. Previously, the cyclic groups were described
 The important property of a cyclic group is that it contains a generator element.
 Multiplying the generator element by itself yields all elements in the cyclic group
 until the neutral element is reached. However, the generated elements
-are not used to be sorted. There is no obvious way to approximate the amount of times
+are not used to be sorted. There is no obvious way to approximate the number of times
 to multiply the generator by itself to yield a particular element.
 
 Lets take the cyclic group $$((\mathbb{Z}/23\mathbb{Z})^{\times}, \cdot)$$
@@ -248,11 +248,11 @@ Visualizing the successive way of generating the elements looks as follows:
 
 ![Generating the elements of a multiplicative group](/gif/group-generation.gif "Generating the elements of a multiplicative group")
 
-In the illustration the bars at top represent from left to right the indices $$1 \leq i \leq 22$$.
+In the illustration the bars at the top represent from left to right the indices $$1 \leq i \leq 22$$.
 The bars at bottom represent for each selected index $$i$$ above the element $$19^i \in (\mathbb{Z}/23\mathbb{Z})^{\times}$$.
 
 It is a known fact that the multiplicative group $$\mathbb{F}^{\times}$$
-- and every sub group of $$\mathbb{F}^{\times}$$ especially the $$\mathbb{F}^{\times}$$
+- and every subgroup of $$\mathbb{F}^{\times}$$ especially the $$\mathbb{F}^{\times}$$
 itself too - of a finite field $$\mathbb{F}$$ is a cyclic group.
 Thus, such group also has a generator element $$g$$ which can be used to denote all
 other elements $$g^i \in \mathbb{F}^{\times}, i \in \mathbb{Z}$$ in the group.
@@ -267,7 +267,7 @@ discrete logarithm of $$b$$ to the base $$g$$.
 As an example take again the finite field $$\mathbb{F}_{23} = (\mathbb{Z}/23\mathbb{Z}, +, \cdot)$$.
 Then $$\mathbb{F}_{23}^{\times} = \mathbb{F}_{23} \backslash \{0\}$$ is the multiplicative group.
 Let $$g = 5 \in \mathbb{F}_{23}^{\times}$$ be a generator. Find $$i \in \mathbb{Z}$$ such that it is $$g^i \equiv 6$$.
-In order to find $$i$$ you may guess an integer or try to brute-force it.
+In order to find $$i$$, you may guess an integer or try to brute-force it.
 There are in total 22 different elements in $$\mathbb{F}_{23}^{\times}$$.
 Since it is $$a^{|\mathbb{F}_{23}^{\times}|} = a^{22} = 1$$ for all $$a \in \mathbb{F}_{23}^{\times}$$
 we can exclude $$i=22$$ from the possibilities. Also, we can exclude $$i=1$$ since $$5^1 = 5 \ne 6$$.
@@ -299,17 +299,17 @@ Let $$28 = g^i$$. Find $$i$$.
 ## Polynomials
 
 ### Definition
-In order to be able to explicitly construct $$\mathbb{F}_{p^n}$$ fields we will need so
-called irreducible polynomials. So, first we need to understand what a polynomial is
+In order to be able to explicitly construct $$\mathbb{F}_{p^n}$$ fields, we will need
+so-called irreducible polynomials. So, first we need to understand what a polynomial is
 and we need to be able to add, multiply two polynomials and modulo reduce a polynomial
 by another polynomial.
 
 > A polynomial is a mathematical expression involving a sum of powers in one or more
 > variables multiplied by coefficients. [[source][Poly]]
 
-Given a field $$\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}$$, where $$p$$ is prime, this
+Given a field $$\mathbb{F}_p = \mathbb{Z}/p\mathbb{Z}$$, where $$p$$ is prime, the
 article focuses only on univariate polynomials, i.e. polynomials in one variable with
-constant coefficients given by
+constant coefficients are given by
 
 $$ \sum_{i=0}^{n} a_iT^i = a_0T^0 + a_1T^1 + ... + a_nT^n \in \mathbb{F}_p[T], $$
 
@@ -317,7 +317,7 @@ where $$ a_i \in \mathbb{F}_p $$.
 
 ### Binary operations
 
-In order to be able to construct $$\mathbb{F}_{p^n}$$ finite fields we will need to
+In order to be able to construct $$\mathbb{F}_{p^n}$$ finite fields, we will need to
 compute [irreducible polynomials][IrrPoly]. For computing irreducible polynomials
 we will need to be able to add and multiply polynomials.
 
@@ -395,7 +395,7 @@ $$ c_k = \sum_{i+j=k} a_ib_j\text{.} $$
 The maximum value of the variable $$k$$ is the sum of the maximum value of $$i$$ and $$j$$.
 This way the process of multiplying each term of the first polynomial with each term
 of the second polynomial and eventually simplifying the results in order to yield the
-final coefficients is expressed all together.
+final coefficients are expressed altogether.
 
 To take our example above, let $$[a_0, a_1, a_2] = [1,1,1]$$ and $$[b_0, b_1] = [1,1]$$,
 where $$a_i,b_j \in \mathbb{F}_2$$.
@@ -452,8 +452,8 @@ In other words a polynomial $$f \in \mathbb{F}[T]$$ is irreducible if its degree
 is greater than zero and if $$f = gh$$ with $$g,h \in \mathbb{F}[T]$$ implicates that
 $$g$$ or $$b$$ are constant values.
 
-Lets look at the polynomials in $$\mathbb{F}_2[T]$$ of degree between 1 and 2.
-Firstly, in order to examine the polynomials, first we will need to list all possible
+Let's look at the polynomials in $$\mathbb{F}_2[T]$$ of degree between 1 and 2.
+Firstly, in order to examine the polynomials, first, we will need to list all possible
 polynomials of degree 1 and all possible polynomials of degree 2.
 
 If we look at the polynomials as an infinite sequence it is easy to notice that
@@ -477,13 +477,13 @@ T^2+T+1 &= [1,1,1]\\
 \end{align}
 $$
 
-Obviously, the polynomial $$T = [0,1]$$ can not be factored into two non-constant
+Obviously, the polynomial $$T = [0,1]$$ cannot be factored into two non-constant
 polynomials and thus it is an irreducible polynomial. Same applies to $$T+1$$, since
-$$T \cdot T = T^2 \ne T+1$$. On the other hand $$T^2$$ is not irreducible or to put it
-differently $$T^2$$ is reducible. For the other polynomials it might require to take a
+$$T \cdot T = T^2 \ne T+1$$. On the other hand, $$T^2$$ is not irreducible or to put it
+differently, $$T^2$$ is reducible. For the other polynomials it might require to take a
 good look at them, or we successively compute the product of all "lower" polynomials
 and check whether we find any product of two polynomials with degree greater than 0
-that equals the target polynomial. If there exists no such two polynomials the target
+that equals the target polynomial. If there exist no such two polynomials the target
 polynomial is irreducible. To complete the example above:
 
 <center>
@@ -500,7 +500,7 @@ polynomial is irreducible. To complete the example above:
 </table>
 </center>
 
-From this table it can be clearly observed that $$T^2$$, $$T^2+1$$ and $$T^2+T$$ are reducible.
+From this table, it can be clearly observed that $$T^2$$, $$T^2+1$$ and $$T^2+T$$ are reducible.
 Thus, the remaining polynomials are the irreducible polynomials of degree 1 and 2, namely $$T$$, $$T+1$$ and $$T^2+T+1$$.
 
 ```haskell
@@ -571,7 +571,7 @@ Output of `irreduciblesP 2 4`.
 
 This is a rather naïve approach for generating irreducible
 polynomials which is slow. There are also [probabilistic][FastIrrPoly] or
-[deterministic][FastIrrPoly2] approaches which allows to find irreducible polynomials
+[deterministic][FastIrrPoly2] approaches which allows finding irreducible polynomials
 much more efficiently.
 
 The generated irreducible polynomials are required in the following steps in order to
@@ -599,15 +599,15 @@ See [definitions, properties][FiniteField] and [examples][Explicit_construction_
 > then $$xy$$ and $$yx$$ belong to $$I$$.[[source][Ideal]]
 
 The elements of the finite field $$\mathbb{F}_p[T]/(f)$$ are cosets.
-Every field is also a ring. In ring terminology $$\mathbb{F}_p[T]/(f)$$ is called the
+Every field is also a ring. In the terminology of the ring theory $$\mathbb{F}_p[T]/(f)$$ is called the
 factor ring of $$\mathbb{F}_p[T]$$ modulo $$(f)$$ or quotient ring of $$\mathbb{F}_p[T]$$
 modulo $$(f)$$. The quotient ring contains the cosets which are yielded by modulo reducing
 each element in the original ring. Take, for instance, the ring
-$$R = \mathbb{Z}$$. As an ideal we could use
+$$R = \mathbb{Z}$$. As an ideal, we could use
 
 $$I = (2) = 2\mathbb{Z} = \{ ..., -8, -6, -4, -2, 0, 2, 4, 6, 8, ... \}$$
 
-because, firstly $$(2\mathbb{Z}, +)$$ is a sub group of $$(\mathbb{Z}, +)$$ and secondly
+because, firstly $$(2\mathbb{Z}, +)$$ is a subgroup of $$(\mathbb{Z}, +)$$ and secondly
 for all $$a \in 2\mathbb{Z}$$ and for all $$b \in \mathbb{Z}$$ the elements $$ab$$ and
 $$ba$$ are contained in the set $$2\mathbb{Z}$$.
 
@@ -650,7 +650,7 @@ a + 2\mathbb{Z} = \{ ..., -3, -1,  1, 3, 5, 7, 9, ...  \} && \text{for } a = 3\\
 \end{align}
 $$
 
-In fact it seems there are only two cosets contained in the quotient ring, namely:
+In fact, it seems there are only two cosets contained in the quotient ring, namely:
 
 $$
 \begin{align}
@@ -683,7 +683,7 @@ $$[r] = r + (f)$$
 
 where $$r$$ are all polynomials in $$\mathbb{F}[T]$$ with $$\text{degree}(r) < \text{degree}(f)$$.
 
-In the following example the elements of $$\mathbb{F}_{2}[T]/(T^2+T+1)$$ is being calculated step-by-step.
+In the following example, the elements of $$\mathbb{F}_{2}[T]/(T^2+T+1)$$ is being calculated step-by-step.
 Since every coset $$[a], a \in \mathbb{F}_2[T]$$ modulo $$(f)$$ contains exactly one
 polynomial $$r$$ which is the remainder when dividing by $$f$$ and since
 $$\text{degree}(r) < \text{degree}(f)$$ all possible remainders in case of
@@ -977,12 +977,12 @@ be bijective.
 ### Diffie-Hellman key exchange
 The goal of this method is to securely exchange cryptographic keys. Strictly
 speaking, this method is not a cryptosystem since it is not meant to be used for
-encrypted message transportation. Usually this method is combined with a
-crypto system - for instance a symmetric cryptosystem -, where the key to be used
+encrypted message transportation. Usually, this method is combined with a
+cryptosystem - for instance symmetric cryptosystem -, where the key
 for the cryptosystem is securely transferred using the
 [Diffie-Hellman key exchange][DiffieHellmanKE] method.
 
-In order to apply this method you first need to define a finite field
+In order to apply this method, you first need to define a finite field
 $$\mathbb{F}$$ and find a generator $$g$$ in $$\mathbb{F}^{\times}$$ and make
 both, the finite field and the generator, public.
 Now, assume Alice wants to agree with Bob on a key to use for
@@ -1005,7 +1005,7 @@ Now, both, Alice and Bob, can compute $$(g^a)^b = g^{ab} = g^{ba} = (g^b)^a$$.
 The element $$(g^a)^b = (g^b)^a \in \mathbb{F}^{\times}$$ is the secret key
 which has been exchanged between Alice and Bob.
 
-Now Oscar may has eavesdropped both calculated elements, $$g^a$$ and $$g^b$$.
+Now Oscar may have eavesdropped both calculated elements, $$g^a$$ and $$g^b$$.
 If Oscar knows how to solve the DLP in a finite field $$\mathbb{F}$$, then
 he will also be able to calculate the discrete logarithms $$a$$ and $$b$$
 whereupon he can calculate $$g^{ab}$$. However, it is assumed, that if Oscar
@@ -1067,7 +1067,7 @@ Bob calculates $$(M^{e_A})^{e_B} = M^{e_Ae_B}$$ and sends this back to Alice.
 Alice, then calculates $$(M^{e_Ae_B})^{d_A} = M^{e_Ae_Bd_A} = M^{e_Ad_Ae_B}$$.
 Recall, that for a finite group $$G$$ it is [$$g^{|G|} = e$$][OrdOfElDividesOrdOfGroup]
 for all $$g \in G$$ where $$e$$ is the neutral element.
-Since, it is $$e_Ad_A \equiv 1 (\text{mod} q-1)$$ it follows
+Since it is $$e_Ad_A \equiv 1 (\text{mod} q-1)$$ it follows
 $$e_Ad_A = 1 + c(q-1)$$ for some $$c \in \mathbb{Z}$$
 and thus substituting $$e_Ad_A$$ by $$1+c(q-1)$$ yields
 
@@ -1096,8 +1096,8 @@ $$
 \end{align}
 $$
 
-If Oscar knows how solve the DLP he can break the Massey-Omura cryptosystem.
-It is _assumed_ that Oscar can not break the cryptosystem without solving the DLP.
+If Oscar knows how to solve the DLP he can break the Massey-Omura cryptosystem.
+It is _assumed_ that Oscar cannot break the cryptosystem without solving the DLP.
 
 ```haskell
 {- The extended euclidean algorithm:
@@ -1161,12 +1161,12 @@ $$M^{e_A}$$ from Alice he simply can choose his own $$e_O$$ - again with respect
 $$\text{gcd}(e_O, q-1)=1$$ and sends back $$M^{e_Ae_O}$$ to Alice.
 Whereupon Alice sends $$M^{e_O}$$ to Oscar while thinking that she is sending
 $$M^{e_B}$$ to Bob. Then Oscar can decrypt $$M^{e_O}$$ as Bob would do with $$M^{e_B}$$.
-In order to not let Bob or Alice notice anything Oscar can continue to send encrypted
+In order to not let Bob or Alice notice anything, Oscar can continue to send encrypted
 messages to Bob. So, Oscar can send $$M^{e_O}$$ to Bob, whereupon Bob sends back
 $$M^{e_Oe_B}$$ and Oscar, finally, sends $$M^{e_B}$$ to Bob.
 In order to prevent Oscar from eavesdropping here, one needs to do authentication.
 With authentication and integrity methods Alice can make sure that the messages she
-receives are really from Bob. The topic here is to ensure that a message from sender
+receives are really from Bob. The topic here is to ensure that a message from a sender
 S is really from the sender S. The other topic is to ensure that a message has not been
 modified when transferring the message.
 
@@ -1226,14 +1226,14 @@ Also, they made the primitive element $$g = [T+T^3] \in \mathbb{F}^{\times}$$ pu
 You successfully eavesdropped $$g^a=[T^2+T^4+T^5]$$ as well as $$g^b=[T^3,T^4,T^5,T^6,T^7]$$
 from their Diffie-Hellman key exchange.
 Since there are 255 elements in $$\mathbb{F}^{\times}$$ you guess that the exchanged key
-is an alphabet from the ASCII table and the polynomial is interpreted as a bit sequence.
+is an alphabet from the ASCII table. The polynomial is interpreted as a bit sequence.
 What is the secret key Alice and Bob are using?
 What has Alice sent to Bob with `dellepudeldkknwu`?
 
 ## Concluding
 The cryptosystems, described in this article, eventually only require a cyclic group.
-Since the multiplicative group of any finite field is cyclic, you can take any
-big finite field in order to apply the cryptosystem.
+Since the multiplicative group of any finite field is cyclic,
+you can take any finite field in order to apply the cryptosystem.
 You might take a finite field $$\mathbb{F}_{p}$$, or $$\mathbb{F}_{p^n}$$,
 or you choose a big subgroup of an elliptic curve over a finite field which
 is cyclic. Concrete examples can help to understand the mechanisms. However, it
@@ -1241,22 +1241,22 @@ is also useful to keep an abstract view on the mechanisms. Having the abstract
 way of understanding the mechanisms themselves can bring ideas and open the ways
 for the application and discovery of new methods.
 
-A lot of theory has been left out in this article. However, if you have interest in
+A lot of theory has been left out in this article. However, if you have an interest in
 understanding more deeply how and why the methods and computations in this article work,
 I want to encourage you to take a look at abstract algebra. Studying the fundamentals
 can help a lot in order to understand how and why things work. For instance, there
 are proofs about finite fields, that the cardinality of finite fields is always the
-nth power of a prime number. The theory bases on extension fields.
+nth power of a prime number. The theory based on extension fields.
 Also, studying the fundamentals can bring ideas and show how to make computations faster.
-For instance, in ring theory you can find the [Chinese remainder theorem][ChineseRemainder].
-More specifically, in ring theory the Chinese remainder theorem can be expressed as a
+For instance, in ring theory, you can find the [Chinese remainder theorem][ChineseRemainder].
+More specifically, in ring theory, the Chinese remainder theorem can be expressed as a
 ring homomorphism. To formulate it informally: when applying the homomorphism a number
 can be mapped to a tuple of smaller numbers where each element in the tuple has an own
-modulus. Due to the usage of the modulus operation it is possible to multiply or add
+modulus. Due to the usage of the modulus operation, it is possible to multiply or add
 numbers which stay always relatively small and do not grow. After the calculation is
 done with the small numbers, the tuple of numbers can be mapped back to one single
 number. This is only one example of more possible ideas you might take from taking a
-deeper look under hood of the methods.
+deeper look under the hood of the methods.
 
 [ModMultIsAssoc]: https://proofwiki.org/wiki/Modulo_Multiplication_is_Associative
 [SubGroupTest]: https://en.wikipedia.org/wiki/Subgroup_test
