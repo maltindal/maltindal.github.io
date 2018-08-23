@@ -204,8 +204,7 @@ who does not and should not know some key information to solve a certain problem
 to read encrypted messages for instance.
 In the following, a problem will be described. The good thing about the problem
 is that can be defined over a cyclic group,
-and with that also over every multiplicative subgroup of any finite field
-- especially the multiplicative group of a finite field itself. There are proofs about
+and with that also over every multiplicative subgroup of any finite field - especially the multiplicative group of a finite field itself. There are proofs about
 the fact that every finite subgroup of a multiplicative group of a field is cyclic.
 These proofs are unfortunately somewhat tricky. If you are interested I want to encourage
 you to take a look at the proofs [here][MultCyclicFiniteFieldGroup1],
@@ -251,8 +250,7 @@ Visualizing the successive way of generating the elements looks as follows:
 In the illustration the bars at the top represent from left to right the indices $$1 \leq i \leq 22$$.
 The bars at bottom represent for each selected index $$i$$ above the element $$19^i \in (\mathbb{Z}/23\mathbb{Z})^{\times}$$.
 
-It is a known fact that the multiplicative group $$\mathbb{F}^{\times}$$
-- and every subgroup of $$\mathbb{F}^{\times}$$ especially the $$\mathbb{F}^{\times}$$
+It is a known fact that the multiplicative group $$\mathbb{F}^{\times}$$ - and every subgroup of $$\mathbb{F}^{\times}$$ especially the $$\mathbb{F}^{\times}$$
 itself too - of a finite field $$\mathbb{F}$$ is a cyclic group.
 Thus, such group also has a generator element $$g$$ which can be used to denote all
 other elements $$g^i \in \mathbb{F}^{\times}, i \in \mathbb{Z}$$ in the group.
